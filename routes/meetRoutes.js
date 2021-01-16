@@ -148,7 +148,7 @@ module.exports = (app,io) => {
                 to: `${email}`,
                 subject: 'Enjoy meeting room',
                 html: '<p>please click link below to meeting with sender</p>' +
-                    `<a href="http://localhost:3000/room/${roomID}"> ${roomID}</a>`
+                    `<a href="https://online-meetting.herokuapp.com/room/${roomID}"> ${roomID}</a>`
             };
             try {
                  transporter.sendMail(mailOption, function (error, info) {

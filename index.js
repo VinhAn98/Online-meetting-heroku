@@ -255,7 +255,7 @@ io.on('connection', socket => {
     });
 
     socket.on('remove-member-when-leave', async InfoUser => {
-        console.log(InfoUser);
+        //console.log(InfoUser);
         const {roomId, userInfo} = InfoUser;
         const {_id} = userInfo;
         try {
@@ -272,8 +272,8 @@ io.on('connection', socket => {
         }
 
     });
-    socket.on('remove-when-refresh', async infoUser => {
 
+    socket.on('remove-when-refresh', async infoUser => {
        const {roomID,dataUserLeave} = infoUser;
        //console.log(infoUser);
        //console.log(dataUserLeave);
@@ -288,6 +288,22 @@ io.on('connection', socket => {
         }catch (e) {
             console.log(e);
         }
+    });
+    socket.on('remove-teacher-when-refresh', async user => {
+        const {roomID,userInfo} = user;
+        //console.log(userInfo);
+        //console.log(dataUserLeave);
+       // const {_id} = dataUserLeave;
+     /*   try {
+            let checkMember = await Room.findOne({RoomId: roomID});
+            checkMember.Member.pull({_id});
+            checkMember.save();
+            io.emit('member', {member: checkMember.Member});
+            io.emit('show-pop-up',dataUserLeave);
+            //socket.emit('remove-member-success',{remove:true});
+        }catch (e) {
+            console.log(e);
+        }*/
     });
 
     socket.on('disconnect', () => {
@@ -312,7 +328,16 @@ io.on('connection', socket => {
        socket.broadcast.emit('user-capture-have-end',data);
     });
 
+    socket.on('getMember', async data => {
+        try {
+            let roomHave = await Room.findOne({RoomId: data});
+            io.emit('MemberHave',{member: roomHave.Member});
 
+        }catch (e) {
+            console.log(e);
+        }
+
+    });
 
 });
 
@@ -331,14 +356,17 @@ mongoose.connection.on('error', (err) => {
     console.error('Error come to mongo', err);
 
 });
-app.use(express.static('build'));
 
-const path =require('path');
-app.get('*',(req,res) => {
-    res.sendFile(path.resolve(__dirname,'build','index.html'));
-});
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('build'));
 
-server.listen(process.env.PORT || 5000, () => console.log('server is running on port 5000'));
+    const path =require('path');
+    app.get('*',(req,res) => {
+        res.sendFile(path.resolve(__dirname,'build','index.html'));
+    });
+}
+const PORT = process.env.PORT || 5000;
+server.listen(PORT, () => console.log('server is running on port 5000'));
 
 
 
