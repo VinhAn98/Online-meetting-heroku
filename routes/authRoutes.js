@@ -47,7 +47,7 @@ module.exports = (app) => {
             to: `${email}`,
             subject: 'Active your account',
             html: '<p>please click link below to active you account</p>' +
-                `<a href="http://localhost:3000/active/${randomURL}"> ${randomString}</a>`
+                `<a href="https://online-meetting.herokuapp.com/active/${randomURL}"> ${randomString}</a>`
         };
         try {
             const createUser = new User(_User);
