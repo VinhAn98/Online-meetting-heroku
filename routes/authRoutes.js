@@ -64,8 +64,9 @@ module.exports = (app) => {
             });
             //send email active
             //console.log(token);
-            const user = await User.findOne({email});
-            const {_id, name, role} = user;
+            const infoUser = await User.findOne({email});
+            console.log(infoUser);
+            const {_id, name, role} = infoUser;
             const userInfo = {_id, email, name, role};
             res.send({token,userInfo});
 
