@@ -64,8 +64,10 @@ module.exports = (app) => {
             });
             //send email active
             //console.log(token);
-
-            res.send({token});
+            const user = await User.findOne({email});
+            const {_id, name, role} = user;
+            const userInfo = {_id, email, name, role};
+            res.send({token,userInfo});
 
 
         } catch (err) {
@@ -95,6 +97,7 @@ module.exports = (app) => {
             await user.comparePassword(password);
             const token = jwt.sign({userId: user._id}, 'MY_SECRET_KEY');
             const userInfo = {_id, email, name, role};
+
             //console.log(userInfo);
             res.send({token, userInfo});
 
